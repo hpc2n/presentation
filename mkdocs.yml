@@ -1,0 +1,54 @@
+# Reference: http://mkdocs.org
+site_name: NAISS / HPC2N presentations  
+repo_url: https://github.com/hpc2n/presentations 
+
+site_description: Material for various presentations from HPC2N and/or NAISS 
+# Info about the slide show software here: https://github.com/dhondta/mkdocs-revealjs-template 
+nav:
+  - 'Introduction': index.md
+  - 'Introduction':
+    - 'A sample slideshow': slides/intro.md
+  - 'Slurm at NAISS and HPC2N': slurm.md
+  - 'Module management': modules.md 
+extra:
+  mailto: info@hpc2n.umu.se
+# Plugins available at: http://bwmarrin.github.io/MkDocsPlus/datatables/
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - codehilite
+  - pymdownx.details
+  - fenced_code
+    #  - fontawesome_markdown
+  - nl2br
+  - tables
+extra_javascript: []
+extra_css: 
+  - css/extra.css
+# if true: use e.g. '/subdir/' instead of '/subdir/index.html'
+use_directory_urls: true
+theme:
+  name: readthedocs
+  custom_dir: theme
+  # or mkdocs-revealjs-template/theme if the template is used as a git submodule
+  locale: en
+  logo: images/logo.png  
+  features: 
+    - toc.follow
+    - toc.integrate
+    - navigation.top
+    - navigation.sections
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+  tabs: true
+  language: en
+docs_dir: src
+site_dir: '/tmp'
+#dev_addr: '0.0.0.0:8000'
