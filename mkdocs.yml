@@ -6,10 +6,9 @@ site_description: Material for various presentations from HPC2N and/or NAISS
 # Info about the slide show software here: https://github.com/dhondta/mkdocs-revealjs-template 
 nav:
   - 'Introduction': index.md
-  - 'Introduction':
-    - 'A sample slideshow': slides/intro.md
-  - 'Slurm at NAISS and HPC2N': slurm.md
-  - 'Module management': modules.md 
+  - 'Slurm - a batch scheduler': slides/batch.md  
+  - 'Slurm at NAISS and HPC2N': slides/slurm.md
+  - 'Module management': slides/modules.md 
 extra:
   mailto: info@hpc2n.umu.se
 # Plugins available at: http://bwmarrin.github.io/MkDocsPlus/datatables/
