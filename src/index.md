@@ -1,4 +1,6 @@
-## NAISS/USAC workshop about Slurm and module management
+<img src="img/logo.png" width="50%">
+
+# Slurm and module management
 
 Given by NAISS staff at the HPC2N branch, for the USAC/NAISS meeting 26-27 August 2025. 
 

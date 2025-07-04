@@ -1,22 +1,73 @@
-## <!-- .element: class="slideshow-title" --> Introduction
+## <!-- .element: class="slideshow-title" --> Slurm - a batch scheduler
 
-<small>by Happy-Doc-Writer, 01/01/01</small>
+<img src="../../img/logo.png" width="35%">
+<br>
+<small>2025-08-27</small>
+<br>
+<small>Birgitte Brydsö, HPC2N</small>
 
------
 
-## Your first slideshow section
-
-By using `-----`, you define a new section (browsable by going left/right).
-
-----
-
-### This is a slide of the current section
-
-By using `----`, you only define a new section slide (browsable by going up/down).
 
 -----
 
-## An example of slide
+### Overview
+
+<small style="width: 45%; position: relative; bottom: 80px;">
+
+- What is a batch scheduler?
+- The Slurm batch scheduler: commands
+- The Slurm batch script; nodes, cores, GPUs
+- Sample job scripts
+    - I/O intensive
+    - MPI and OpenMP
+    - job arrays
+    - simple task farming
+- Increasing the memory per task 
+- Job monitoring and efficiency
+
+-----
+
+### Batch schedulers 
+
+<small style="width: 80%; position: relative; bottom: 80px;">
+
+A batch system provides a mechanism to submit programs (jobs) or groups of programs to be executed automatically.
+
+While batch systems are usually associated with large compute clusters, they could also be run on a single computer. Here, however, we will focus on its use on clusters, like Tetralith, Dardel, Alvis, or Kebnekaise.
+
+-----
+
+#### Batch schedulers - HPC clusters
+
+<img src="../../img/cluster.png" width="30%">
+
+<small style="width: 80%; position: relative; bottom: 80px;">
+
+- Many compute nodes (calculations)
+- Login node (submission, compiling, ...)
+- Global disk (shared for all cluster, visible for all nodes)
+- Node-local disk (best performance, only visible inside node, during job)
+
+-----
+
+#### Batch schedulers - job types
+
+<small style="width: 80%; position: relative; bottom: 80px;">
+
+Many types of jobs can be handled by a job scheduler and made to run efficiently on a cluster. These are some typical examples:  
+
+- Tasks that can be split up into many serial jobs
+- Many instances of the same task
+- MPI jobs
+- Shared memory
+- GPU jobs 
+
+----- 
+
+#### Batch schedulers - scheduling jobs
+
+
+
 
 <!-- As it can be seen here, HTML code can be used inside the Markdown file -->
 
@@ -31,7 +82,7 @@ happy-doc-writer
 
 </small>
 
-----
+-----
 
 ## An example of flowchart
 

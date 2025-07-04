@@ -33,7 +33,7 @@ theme:
   custom_dir: theme
   # or mkdocs-revealjs-template/theme if the template is used as a git submodule
   locale: en
-  logo: images/logo.png  
+  logo: img/logo.png  
   features: 
     - toc.follow
     - toc.integrate
