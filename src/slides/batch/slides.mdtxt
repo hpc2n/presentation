@@ -16,14 +16,6 @@
 
 - What is a batch scheduler?
 - The Slurm batch scheduler: commands
-- The Slurm batch script; nodes, cores, GPUs
-- Sample job scripts
-    - I/O intensive
-    - MPI and OpenMP
-    - job arrays
-    - simple task farming
-- Increasing the memory per task 
-- Job monitoring and efficiency
 
 -----
 
@@ -62,11 +54,23 @@ Many types of jobs can be handled by a job scheduler and made to run efficiently
 - Shared memory
 - GPU jobs 
 
------ 
+-----
 
 #### Batch schedulers - scheduling jobs
 
+<small style="width: 90%; position: relative; bottom: 80px;">
 
+**Key functions:**
+
+- Keeps track of available system resources - it allocates to users, exclusive or non-exclusive access to resources for some period of time
+- Enforces local system resource usage and job scheduling policies - provides a framework for starting, executing, and monitoring work
+- Manages a job queue, distributing work across resources according to policies
+
+**NOTE**: 
+
+You can run programs either by giving all the commands on the command line or by submitting a job script. Using a job script is often recommended (terminal is available, easy record of commands) 
+
+-----
 
 
 <!-- As it can be seen here, HTML code can be used inside the Markdown file -->
