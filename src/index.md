@@ -41,4 +41,11 @@ Given by NAISS staff at the HPC2N branch, for the USAC/NAISS meeting 26-27 Augus
 
 Fetch the tar ball with hands-ons: 
 
-``wget exercises.tar.gz``
+``wget https://raw.githubusercontent.com/hpc2n/presentation/refs/heads/main/exercises.tar.gz``
+
+Extract the content: 
+
+``tar -zxvf exercises.tar.gz`` 
+
+You will get a directory called ``exercises`` with two subdirectories: ``slurm`` and ``modules``. 
+
