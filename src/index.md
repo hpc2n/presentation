@@ -37,4 +37,8 @@ Given by NAISS staff at the HPC2N branch, for the USAC/NAISS meeting 26-27 Augus
     - OpenOnDemand: https://alvis.c3se.chalmers.se 
     - ThinLinc and other ways to connect for remote graphics: https://www.c3se.chalmers.se/documentation/connecting/remote_graphics/ 
 
+## Hands-on exercises 
 
+Fetch the tar ball with hands-ons: 
+
+``wget exercises.tar.gz``
