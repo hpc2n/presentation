@@ -12,7 +12,7 @@
 
 ### Overview
 
-<small style="width: 45%; position: relative; bottom: 80px;">
+<small style="width: 85%; position: relative; bottom: 80px;">
 
 - What is a batch scheduler?
 - The Slurm batch scheduler: commands
@@ -21,7 +21,7 @@
 
 ### Batch schedulers 
 
-<small style="width: 80%; position: relative; bottom: 80px;">
+<small style="width: 85%; position: relative; bottom: 80px;">
 
 A batch system provides a mechanism to submit programs (jobs) or groups of programs to be executed automatically.
 
@@ -33,7 +33,7 @@ While batch systems are usually associated with large compute clusters, they cou
 
 <img src="../../img/cluster.png" width="30%">
 
-<small style="width: 80%; position: relative; bottom: 80px;">
+<small style="width: 85%; position: relative; bottom: 80px;">
 
 - Many compute nodes (calculations)
 - Login node (submission, compiling, ...)
@@ -44,7 +44,7 @@ While batch systems are usually associated with large compute clusters, they cou
 
 #### Batch schedulers - job types
 
-<small style="width: 80%; position: relative; bottom: 80px;">
+<small style="width: 85%; position: relative; bottom: 80px;">
 
 Many types of jobs can be handled by a job scheduler and made to run efficiently on a cluster. These are some typical examples:  
 
@@ -80,6 +80,20 @@ You can run programs either by giving all the commands on the command line or by
 - Slurm is an Open Source job scheduler which handles the three key functions mentioned previously 
 
 -----
+
+#### Batch schedulers - job types
+
+<small style="width: 90%; position: relative; bottom: 80px;">
+
+Many types of jobs can be handled by a job scheduler and made to run efficiently on a cluster. These are some typical examples:
+
+- Tasks that can be split up into many serial jobs
+- Many instances of the same task
+- MPI jobs
+- Shared memory
+- GPU jobs
+
+----- 
 
 #### Batch schedulers - Slurm commands 
 
@@ -138,63 +152,11 @@ Here I have submitted the jobscript ``simple.sh`` a number of times:
 
 #### Slurm - TYPE ALONG 
 
+<small style="width: 85%; position: relative; bottom: 100px;">
+
 1. Go to the sub-directory "slurm"
 2. Submit the job script "simple.sh" a number of times
 3. Type ``squeue --me``  to see a list of your jobs and their states 
-4. If the job script 
-
-
-
------
-
-<!-- As it can be seen here, HTML code can be used inside the Markdown file -->
-
-<small style="width: 55%; position: relative; bottom: 100px;">
-
-**A sample of bash listing box**
-
-```bash
-$ whoami
-happy-doc-writer
-```
-
-</small>
-
------
-
-## An example of flowchart
-
-See Ref [1] for more examples.
-
-----
-
---flowchart--
-
-----
-
-## An example of mindmap
-
-See Ref [2] for more examples.
-
-----
-
---mindmap--
-
-----
-
-## An example of quizz
-
-----
-
----quizz---
-
------
-
-## References
-
-<small>
-- [1] *Flowchart.js*, available at http://flowchart.js.org/.
-- [2] *JsMind*, available at https://github.com/hizzgdev/jsmind/.
-
-</small>
+4. If the job ran too fast, then submit it several more times to see the output of ``squeue --me``
+5. You can also look at ``scontrol show job JOBID`` for more information about your job 
 
