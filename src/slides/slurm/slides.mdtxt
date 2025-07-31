@@ -14,6 +14,7 @@
 
 <small style="width: 85%; position: relative; bottom: 80px;">
 
+- Site specifics 
 - Serial, MPI, and OpenMP jobs 
 - Using GPUs
 - Sample job scripts
@@ -22,6 +23,11 @@
     - simple task farming
 - Increasing the memory per task 
 - Job monitoring and efficiency
+- Interactive work 
+
+-----
+
+### Site specifics 
 
 -----
 

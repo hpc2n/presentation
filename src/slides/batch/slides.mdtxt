@@ -93,7 +93,7 @@ Many types of jobs can be handled by a job scheduler and made to run efficiently
 - Shared memory
 - GPU jobs
 
------ 
+-----
 
 #### Batch schedulers - Slurm commands 
 
