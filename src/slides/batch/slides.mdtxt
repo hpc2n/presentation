@@ -150,6 +150,13 @@ Here I have submitted the jobscript ``simple.sh`` a number of times:
 
 -----
 
+#### Slurm - job starting times 
+
+- the estimated start time can be seem from ``scontrol show job JOBID`` or ``squeue --me --start``
+- the estimated start time **may change** depending on other jobs being submitted, starting, or ending (perhaps earlier than expected) 
+
+-----
+
 #### Slurm - TYPE ALONG 
 
 <small style="width: 85%; position: relative; bottom: 100px;">

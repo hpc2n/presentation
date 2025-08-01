@@ -29,12 +29,84 @@
 
 ### Site specifics 
 
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+There are minor differences between the sites. 
+
+- CPU/GPU types
+- installed modules
+- interactivity
+
+Examples: Tetralith (NSC), Dardel (KTH), Kebnekaise (HPC2N) 
+
+-----
+
+### Site specifics - Tetralith 
+
+<normal>
+
+- 32 cores/node
+- 96-384 GB RAM/node
+- Nvidia T4 GPUs (1/node) 
+    - 
+```bash 
+#SBATCH -n 1
+#SBATCH -c 32
+#SBATCH --gpus-per-task=1
+```
+
+-----
+
+### Site specifics - Dardel 
+
+- 128 cores/node
+- 256-2048 GB RAM/node
+- 4 AMD Instinct™ MI250X á 2 GCDs per node 
+    - 
+```bash 
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=1
+#SBATCH -p gpu
+```
+
+-----
+
+#### Site specifics - Kebnekaise 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+- 28 cores/skylake, 72 cores/largemem, 128/256 cores/AMD Zen3/Zen4 
+- 128-3072 GB RAM/node 
+- NVidia V100, A100, A6000, L40s, H100, A40, AMD MI100 
+    - 
+```bash 
+#SBATCH --gpus=x
+#SBATCH -C <type>
+```
+    - type and number of cards/node (x) 
+        - v100, 2
+        - a40, 8
+        - a6000, 2
+        - l40s, 2 or 6
+        - a100, 2
+        - h100, 4
+        - mi100, 2
+
+
 -----
 
 ### Serial, MPI, and OpenMP jobs
 
+```bash 
+#!/bin/bash 
+#SBATCH -A <account>
+#SBATCH -t HHH:MM:SS 
+#SBATCH -n 1
 
+module load <modules>
 
+./myserialprogram  
+```
 
 -----
 
