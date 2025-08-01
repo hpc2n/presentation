@@ -97,6 +97,8 @@ Examples: Tetralith (NSC), Dardel (KTH), Kebnekaise (HPC2N)
 
 ### Serial, MPI, and OpenMP jobs
 
+Serial job: 
+
 ```bash 
 #!/bin/bash 
 #SBATCH -A <account>
@@ -107,6 +109,74 @@ module load <modules>
 
 ./myserialprogram  
 ```
+
+- n, number of tasks. Since cores per task is 1 as default, this equals cores in this case. 
+
+-----
+
+#### Note: Time/walltime
+
+<small style="width: 95%; position: relative; bottom: 80px;"> 
+
+- the job **will** terminate when the time runs out, whether it has finished or not 
+- you will only be "charged" for the consumed time
+- asking for more time than needed will make the job take longer to start
+- short jobs can start quicker (backfill)
+- if you have no idea how long your job takes, ask for "long" time 
+- Conclusion: Ask for "a bit" more time than needed, but not too much
+
+-----
+
+### Serial, MPI, and OpenMP jobs
+
+<small style="width: 95%; position: relative; bottom: 80px;"> 
+
+MPI job: 
+
+```bash
+#!/bin/bash 
+#SBATCH -A <account>
+#SBATCH -t HHH:MM:SS 
+#SBATCH -n <tasks> 
+
+module load <modules>
+
+srun ./mympiprogram
+```
+
+- Other options are asking for whole nodes (- N) and possibly asking for ``--tasks-per-node`` 
+- ``srun`` and ``mpirun`` should be interchangeable at HPC2N. Tetralith uses ``mpprun`` and Dardel uses ``srun`` 
+- Remember you need to load a module with MPI 
+
+-----
+
+### Serial, MPI, and OpenMP jobs
+
+OpenMP job: 
+
+```bash
+#!/bin/bash 
+#SBATCH -A <account>
+#SBATCH -t HHH:MM:SS 
+#SBATCH -c <cores-per-task> 
+
+module load <modules>
+
+# Set OMP_NUM_THREADS to the same value as -c with a fallback in case it isn't set.
+# SLURM_CPUS_PER_TASK is set to the value of -c, but only if -c is explicitly set
+if [ -n "$SLURM_CPUS_PER_TASK" ]; then
+  omp_threads=$SLURM_CPUS_PER_TASK
+else
+  omp_threads=1
+fi
+export OMP_NUM_THREADS=$omp_threads
+
+./myopenmpprogram
+```
+
+-----
+
+### Using GPUs
 
 -----
 
