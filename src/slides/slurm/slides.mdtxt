@@ -152,6 +152,8 @@ srun ./mympiprogram
 
 ### Serial, MPI, and OpenMP jobs
 
+<small style="width: 95%; position: relative; bottom: 80px;">
+
 OpenMP job: 
 
 ```bash
@@ -174,9 +176,21 @@ export OMP_NUM_THREADS=$omp_threads
 ./myopenmpprogram
 ```
 
+- ``-c`` is used to set cores per task and should be the same as ``OMP_NUM_THREADS`` 
+
 -----
 
 ### Using GPUs
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+This is the most different setting between centers. 
+
+| Resource | batch settings | 
+| -------- | -------------- | 
+| Tetralith | ``#SBATCH -n 1`` <br> ``#SBATCH -c 32`` <br> ``#SBATCH --gpus-per-task=1`` |
+| Dardel    | ``#SBATCH -N 1`` <br> ``#SBATCH --ntasks-per-node=1`` <br> ``#SBATCH -p gpu`` | 
+| Kebnekaise | ``#SBATCH --gpus=x`` <br> ``#SBATCH -C <type>`` | 
 
 -----
 
