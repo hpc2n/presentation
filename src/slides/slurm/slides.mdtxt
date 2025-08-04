@@ -15,13 +15,13 @@
 <small style="width: 85%; position: relative; bottom: 80px;">
 
 - Site specifics 
-- Serial, MPI, and OpenMP jobs 
-- Using GPUs
+- Serial, MPI, OpenMP jobs, Using GPUs
+- Dependencies 
+- Increasing the memory per task 
 - Sample job scripts
     - I/O intensive
     - job arrays
     - simple task farming
-- Increasing the memory per task 
 - Job monitoring and efficiency
 - Interactive work 
 
@@ -184,7 +184,7 @@ export OMP_NUM_THREADS=$omp_threads
 
 <small style="width: 95%; position: relative; bottom: 80px;">
 
-This is the most different setting between centers. 
+This is the most different of the Slurm settings, between centers. 
 
 | Resource | batch settings | 
 | -------- | -------------- | 
@@ -194,7 +194,277 @@ This is the most different setting between centers.
 
 -----
 
-## An example of flowchart
+### Dependencies
+
+Sometimes your workflow has jobs that depend on a previous job 
+
+- Submit your first job: ``sbatch myjob.sh``
+- Wait for that job to finish before starting next job: ``sbatch -d afterok:<prev-JOBID> mynextjob.sh``
+
+Several jobs connected like this -> scripting!  
+
+-----
+
+### Increasing the memory per task 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+- Running out of memory ("OOM"): 
+    - usually the job stops ("crashes") 
+    - check the Slurm error/log files
+    - check with sacct/seff/jobstats/job-usage depending on cluster 
+- Fixes:
+    - use "fat" nodes
+    - allocate more cores just for memory 
+    - tweak mem usage in app, if possible 
+
+-----
+
+#### Increasing memory per task - Tetralith 
+
+96 GB/node: 
+```bash
+-C thin --exclusive
+``` 
+
+384 GB/node: 
+```bash
+-C fat --exclusive
+```
+
+More cores/task, some just giving memory (MPI): 
+```bash
+sbatch --ntasks-per-node=16 --cpus-per-task=2
+```
+
+-----
+
+#### Increasing memory per task - Dardel 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+| Type | RAM | Partition | Available | Example flag |
+| ---- | --- | --------- | --------- | ------------ |  
+| Thin | 256 GB | main, shared, long | 227328 MB | |  
+| Large | 512 GB | main, memory | 456704 MB | --mem=440GB | 
+| Huge | 1 TB |	main, memory | 915456 MB | --mem=880GB | 
+| Giant | 2 TB | memory | 1832960 MB | --mem=1760GB |
+| GPU | 512 GB | gpu | 456704 MB | --mem=440GB | 
+
+On shared partitions you need to give number of cores and will get RAM equivalent for that 
+
+-----
+
+#### Increasing memory per task - Kebnekaise 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+| Type | RAM/core | cores/node | requesting flag | 
+| ---- | -------- | ---------- | --------------- | 
+| Intel Skylake | 6785 MB | 28 | -C skylake | 
+| AMD Zen3 | 8020 MB | 128 | -C zen3 | 
+| AMD Zen4 | 2516 MB | 256 | -C zen4 | 
+| V100 | 6785 MB | 28 | --gpus=<#> -C v100 | 
+| A100 | 10600 MB | 48 | --gpus=<#> -C a100 | 
+| MI100 | 10600 MB | 48 | --gpus=<#> -C mi100 | 
+| A6000 | 6630 MB | 48 | --gpus=<#> -C a6000 | 
+| H100 | 6630 MB | 96 | --gpus=<#> -C h100 | 
+| L40s | 11968 MB | 64 | --gpus=<#> -C l40s | 
+| A40 | 11968 MB | 64 | --gpus=<#> -C a40 | 
+| Largemem | 41666 MB | 72 | -C largemem | 
+
+<hr>
+- Also more cores/task with ``-c <#cores/task>`` just for memory
+
+-----
+
+### I/O intensive jobs
+
+- In most cases, use the project storage
+- If needed, use node-local disk 
+- The environment variable ``$SNIC_TMP`` points to the job directory on the compute node
+- The environment variable ``$SLURM_SUBMIT_DIR`` is the directory you submitted from 
+
+-----
+
+### I/O intensive jobs - example 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+```bash
+#!/bin/bash 
+#SBATCH -A <account>
+#SBATCH -t HHH:MM:SS 
+#SBATCH -n <cores>
+
+module load <modules>
+
+# Copy your data etc. to node local scratch disk
+cp -p mydata.dat $SNIC_TMP
+cp -p myprogram $SNIC_TMP 
+
+# Change to that directory
+cd $SNIC_TMP
+
+# Run your program
+./myprogram
+
+# Copy the results back to the submission directory 
+cp -p mynewdata.dat $SLURM_SUBMIT_DIR 
+``` 
+
+When using node local disk it is important to remember to copy the output data back, since it will go away when the job ends!
+
+-----
+
+### Multiple jobs, same job script
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+- you have several (perhaps smaller) programs to run
+- you can just have the jobs wait in queue ones for all of them
+- they are run from the same job script and have similar requirements
+- if you have a few, just list all in the same script
+- if you have many, job arrays and scripts is better 
+
+Remember: jobs can span multiple nodes, they are the sum of all task resources. Tasks are a subset of resources in a job and only exist within a single node.
+
+-----
+
+### Multiple serial jobs, simultaneously 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+```bash
+#!/bin/bash
+#SBATCH -A <account>
+# Add enough cores that all jobs can run at the same time 
+#SBATCH -n <cores>
+# Make sure the time is long enough that the longest job have time to finish 
+#SBATCH --time=HHH:MM:SS
+
+module load <modules> 
+
+srun -n 1 --exclusive ./program data1 &
+srun -n 1 --exclusive ./program2 data2 & 
+srun -n 1 --exclusive ./program3 data3 &
+... 
+srun -n 1 --exclusive ./program4 data4 &
+wait
+```
+
+-----
+
+### Multiple simultaneous jobs (serial or parallel) 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+In this example, 3 jobs each with 14 cores 
+
+```bash 
+#!/bin/bash
+#SBATCH -A <account>
+# Since the files run simultaneously I need enough cores for all of them to run
+#SBATCH -n 56
+# Remember to ask for enough time for all jobs to complete
+#SBATCH --time=00:10:00
+
+module load <modules>
+
+srun -n 14 --exclusive ./mympiprogram data &
+srun -n 14 --exclusive ./my2mpi data2 &
+srun -n 14 --exclusive ./my3mpi data3 &
+wait
+```
+
+-----
+
+### Multiple sequential jobs (serial or parallel) 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+This example is for jobs where some are with 14 tasks with 2 cores per task and some are 4 tasks with 4 cores per task 
+
+```bash
+#!/bin/bash
+#SBATCH -A <account>
+# Since the programs run sequentially I only need enough cores for the largest of them to run
+#SBATCH -c 28
+# Remember to ask for enough time for all jobs to complete
+#SBATCH --time=HHH:MM:SS
+
+module load <modules>
+
+srun -n 14 -c 2 ./myprogram data 
+srun -n 4 -c 4 ./myotherprogram mydata
+...
+srun -n 14 -c 2 ./my2program data2 
+```
+
+-----
+
+### Job arrays
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+- Job arrays offer a mechanism for submitting and managing collections of similar jobs. 
+- All jobs must have the same initial options (e.g. size, time limit, etc.), however it is possible to change some of these options after the job has begun execution using the scontrol command specifying the JobID of the array or individual ArrayJobID.
+- the execution times vary depending on input data
+- You create multiple jobs from one script, using the ``-- array`` directive. 
+
+- More information here on the official Slurm documentation pages: <a href="https://slurm.schedmd.com/job_array.html" target="_blank">https://slurm.schedmd.com/job_array.html</a>.
+
+-----
+
+### Job arrays - simple example 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+- a small Python script ``hello-world-array.py`` 
+
+```bash
+# import sys library (we need this for the command line args)
+import sys
+
+# print task number
+print('Hello world! from task number: ', sys.argv[1])
+```
+
+- a batch script ``hello-world-array.sh``
+
+```bash
+#!/bin/bash
+# A very simple example of how to run a Python script with a job array
+#SBATCH -A <account>
+#SBATCH --time=00:05:00 # Asking for 5 minutes
+#SBATCH --array=1-10   # how many tasks in the array
+#SBATCH -c 1 # Asking for 1 core    # one core per task
+# Create specific output files for each task with the environment variable %j
+# which contains the job id 
+#SBATCH -o hello-world-%j-%a.out
+
+# Load any modules you need, here for Python 3.11.3 on Kebnekaise
+module load GCC/12.3.0 Python/3.11.3
+
+# Run your Python script
+srun python hello-world-array.py $SLURM_ARRAY_TASK_ID
+```
+
+-----
+
+### Task farming - simple example
+
+-----
+
+### Job monitoring and efficiency
+
+-----
+
+### Interactive work
+
+-----
+
+## An example of flowchat
 
 See Ref [1] for more examples.
 
