@@ -21,7 +21,7 @@
 - Sample job scripts
     - I/O intensive
     - job arrays
-    - simple task farming
+    - simple job "farms" 
 - Job monitoring and efficiency
 - Interactive work 
 
@@ -283,6 +283,7 @@ On shared partitions you need to give number of cores and will get RAM equivalen
 - In most cases, use the project storage
 - If needed, use node-local disk 
 - The environment variable ``$SNIC_TMP`` points to the job directory on the compute node
+    - On some systems $TMPDIR also points to the node local disk 
 - The environment variable ``$SLURM_SUBMIT_DIR`` is the directory you submitted from 
 
 -----
@@ -411,6 +412,8 @@ srun -n 14 -c 2 ./my2program data2
 - All jobs must have the same initial options (e.g. size, time limit, etc.), however it is possible to change some of these options after the job has begun execution using the scontrol command specifying the JobID of the array or individual ArrayJobID.
 - the execution times vary depending on input data
 - You create multiple jobs from one script, using the ``-- array`` directive. 
+- requires little BASH scripting abilities 
+- max number of jobs restricted by max number of jobs/user 
 
 - More information here on the official Slurm documentation pages: <a href="https://slurm.schedmd.com/job_array.html" target="_blank">https://slurm.schedmd.com/job_array.html</a>.
 
@@ -452,7 +455,43 @@ srun python hello-world-array.py $SLURM_ARRAY_TASK_ID
 
 -----
 
-### Task farming - simple example
+### Job arrays - comments 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+- You can either go with the default step of 1 
+    - Example: #SBATCH --array=4-80
+- or give an index (here steps of 4) 
+    - Example: #SBATCH --array=1-100:4
+- and you can give a list instead of a range 
+    - Example: #SBATCH --array=5,8,33,38
+- Name the output and error files so each step gets their own 
+    - ``#SBATCH -o output_%j.out`` or ``#SBATCH -o process_%A_%a.out``
+    - ``#SBATCH -e error_%j.err`` or ``#SBATCH -e process_%A_%a.err`` 
+- There is an environment variable ``$SLURM_ARRAY_TASK_ID`` which can be used to check/query with 
+
+-----
+
+### Job "farms" 
+
+<small style="width: 95%; position: relative; bottom: 80px;">
+
+- allocate some number of cores
+- assume you have some number of jobs, max 1000 perhaps 
+- now make a script in a Slurm script to submit them one at a time until done
+- one job/core, where the core gets a new job assigned when done
+- this does not have direct job number limit restrictions, like max some number jobs/user, though of course there is a limit in how many cores and how long time a certain project can get allocation 
+
+-----
+
+### Job "farms" - simple example
+
+```bash 
+#!/bin/bash
+#SBATCH -A <account> 
+#SBATCH -N 1
+#SBATCH -t 10:00:00 
+#SBATCH 
 
 -----
 
