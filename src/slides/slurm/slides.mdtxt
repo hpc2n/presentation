@@ -21,7 +21,6 @@
 - Sample job scripts
     - I/O intensive
     - job arrays
-    - simple job "farms" 
 - Job monitoring and efficiency
 - Interactive work 
 
@@ -280,6 +279,8 @@ On shared partitions you need to give number of cores and will get RAM equivalen
 
 ### I/O intensive jobs
 
+<small style="width: 95%; position: relative; bottom: 80px;">
+
 - In most cases, use the project storage
 - If needed, use node-local disk 
 - The environment variable ``$SNIC_TMP`` points to the job directory on the compute node
@@ -326,9 +327,7 @@ When using node local disk it is important to remember to copy the output data b
 - you can just have the jobs wait in queue ones for all of them
 - they are run from the same job script and have similar requirements
 - if you have a few, just list all in the same script
-- if you have many, job arrays and scripts is better 
-
-Remember: jobs can span multiple nodes, they are the sum of all task resources. Tasks are a subset of resources in a job and only exist within a single node.
+- if you have many, job arrays or make a script to submit are better 
 
 -----
 
@@ -460,11 +459,13 @@ srun python hello-world-array.py $SLURM_ARRAY_TASK_ID
 <small style="width: 95%; position: relative; bottom: 80px;">
 
 - You can either go with the default step of 1 
-    - Example: #SBATCH --array=4-80
+    - Example: ``#SBATCH --array=4-80``
 - or give an index (here steps of 4) 
-    - Example: #SBATCH --array=1-100:4
+    - Example: ``#SBATCH --array=1-100:4``
 - and you can give a list instead of a range 
-    - Example: #SBATCH --array=5,8,33,38
+    - Example: ``#SBATCH --array=5,8,33,38``
+- you can throttle jobs, so only a smaller number of jobs run at a time
+    - Example: ``#SBATCH --array1-400%4``
 - Name the output and error files so each step gets their own 
     - ``#SBATCH -o output_%j.out`` or ``#SBATCH -o process_%A_%a.out``
     - ``#SBATCH -e error_%j.err`` or ``#SBATCH -e process_%A_%a.err`` 
@@ -472,30 +473,19 @@ srun python hello-world-array.py $SLURM_ARRAY_TASK_ID
 
 -----
 
-### Job "farms" 
+### Job monitoring and efficiency
 
 <small style="width: 95%; position: relative; bottom: 80px;">
 
-- allocate some number of cores
-- assume you have some number of jobs, max 1000 perhaps 
-- now make a script in a Slurm script to submit them one at a time until done
-- one job/core, where the core gets a new job assigned when done
-- this does not have direct job number limit restrictions, like max some number jobs/user, though of course there is a limit in how many cores and how long time a certain project can get allocation 
+There are several commands to monitor the job, some of which are centre specific: 
 
------
+- ``scontrol show job JOBID``
+- ``squeue --me --start`` 
+- ``jobinfo`` (wrapper around squeue)
 
-### Job "farms" - simple example
-
-```bash 
-#!/bin/bash
-#SBATCH -A <account> 
-#SBATCH -N 1
-#SBATCH -t 10:00:00 
-#SBATCH 
-
------
-
-### Job monitoring and efficiency
+- ``jobstat``
+- ``sacct``
+- ``job-usage``
 
 -----
 
