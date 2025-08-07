@@ -477,55 +477,48 @@ srun python hello-world-array.py $SLURM_ARRAY_TASK_ID
 
 <small style="width: 95%; position: relative; bottom: 80px;">
 
-There are several commands to monitor the job, some of which are centre specific: 
-
-- ``scontrol show job JOBID``
-- ``squeue --me --start`` 
-- ``jobinfo`` (wrapper around squeue)
-
-- ``jobstat``
-- ``sacct``
-- ``job-usage``
+- **scontrol show job JOBID**: various info about a job, including *estimated* start time
+- **squeue --me --start**: your running and queued jobs with *estimated* start time 
+- **jobinfo**: wrapper around squeue (UPPMAX, LUNARC, C3SE) 
+- **jobstats -p JOBID**: CPU and memory use of finished job (> 5 min) in a plot (UPPMAX) 
+- **job_stats.py**: link to custom Grafana dashboard with overview gauges of all your running jobs. Add JOBID to get real-time usage of that job (C3SE) 
+- **sacct OPTIONS JOBID**: info about job, add ``-l | less -S`` for (wide format) info    
+- **job-usage JOBID**: grafana graphics of resource use for job (> few minutes) (HPC2N)
+- **lastjobs**: lists 10 most recent job in recent 30 days (NSC) 
+- **projinfo**: lists usage of your project, adding ``-vd`` lists member usage 
+- **sshare -l -A <proj-account>**: gives priority/fairshare (LevelIFS)
 
 -----
 
 ### Interactive work
 
------
+<small style="width: 95%; position: relative; bottom: 80px;">
 
-## An example of flowchat
-
-See Ref [1] for more examples.
-
-----
-
---flowchart--
-
-----
-
-## An example of mindmap
-
-See Ref [2] for more examples.
-
-----
-
---mindmap--
-
-----
-
-## An example of quizz
-
-----
-
----quizz---
+| Cluster | ``interactive`` | ``salloc`` | OpenOnDemand | Other |
+| ------- | --------------- | ---------- | ------------ | |
+| Kebnekaise (HPC2N) | Works | Recommended | Recommended | |
+| Pelle (UPPMAX) | Recommended | Works | N/A | |
+| Cosmos (LUNARC) | Works | N/A | Recommended (GfxLauncher) | |
+| Tetralith (NSC) | Recommended | N/A | N/A | |
+| Dardel (PDC) | N/A | Recommended | Possible | |
+| C3SE (Alvis) | N/A | N/A | Recommended | srun |
 
 -----
 
-## References
+### Interactive work - examples 
 
-<small>
-- [1] *Flowchart.js*, available at http://flowchart.js.org/.
-- [2] *JsMind*, available at https://github.com/hizzgdev/jsmind/.
+<small style="width: 95%; position: relative; bottom: 80px;">
 
-</small>
+- ``interactive -A [proj] [other options]`` 
+- ``salloc -A [proj] -t HHH:MM:SS [other options]`` 
+    - time is required at HPC2N, but not at NSC
+    - all commands must be run with ``srun [command]`` at HPC2N. Not "real" interactivity
+    - at NSC you can login to the allocated compute node with ``ssh [node]`` and run there 
+- OpenOnDemand
+    - Cosmos: Login to ThinLinc, start one of the apps listed under "Applications" 
+    - Kebnekaise: "https://portal.hpc2n.umu.se"
+    - Dardel: Login to ThinLinc, start one of the apps listed under
+"Applications" 
+    - Alvis: "https://alvis.c3se.chalmers.se"
+- Alvis: ``srun -A [proj] --gpus-per-node=T4:1 -t 01:00:00 --pty=/bin/bash`` 
 
