@@ -522,3 +522,8 @@ srun python hello-world-array.py $SLURM_ARRAY_TASK_ID
     - Alvis: "https://alvis.c3se.chalmers.se"
 - Alvis: ``srun -A [proj] --gpus-per-node=T4:1 -t 01:00:00 --pty=/bin/bash`` 
 
+-----
+
+### Hands-ons
+
+
