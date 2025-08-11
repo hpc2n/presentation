@@ -74,6 +74,8 @@ You can run programs either by giving all the commands on the command line or by
 
 #### Batch schedulers - NAISS 
 
+<small style="width: 85%; position: relative; bottom: 100px;">
+
 - Large/long/parallel jobs **must** be run through the batch system.
     - Work done through OpenOnDemand where that is available is automatically run through the batch system
 - The Swedish HPC centres under NAISS all use Slurm 
@@ -157,7 +159,7 @@ Here I have submitted the jobscript ``simple.sh`` a number of times:
 
 -----
 
-#### Slurm - TYPE ALONG 
+#### Slurm - Hands-on 
 
 <small style="width: 85%; position: relative; bottom: 100px;">
 

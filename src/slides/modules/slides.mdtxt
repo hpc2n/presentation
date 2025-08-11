@@ -23,6 +23,13 @@ Modules are:
 
 -----
 
+#### Lmod/Easybuild
+
+- Many HPC centres in Sweden use the Lmod module system. It is an environment module system that is Lua based.
+- Many, but not all of them use the EasyBuild framework for building and installing software modules. 
+
+-----
+
 ### Module commands - refresher 
 
 <small style="width: 85%; position: relative; bottom: 100px;">
@@ -62,7 +69,7 @@ Modules are:
 
 <small style="width: 85%; position: relative; bottom: 100px;">
 
-- Many of the Swedish HPC centres use EasyBuild software for installing software modules. 
+- As mentioned, many Swedish HPC centres use EasyBuild software for installing software modules. 
 - Software is built around so-called “toolchains”: mutually compatible groups of C and Fortran compilers, linear algebra libraries, MPI libraries, and other fundamental packages that are used internally by more familiar packages that users typically work with (e.g., Python, R, GROMACS, etc.).
 - If you need to load several modules that are built with compiler toolchains, they need to be built with the *same* one 
 - A good way to find compatible modules is to load the toolchain need for i.e. Python/VERSION and then see which versions of TensorFlow, PyTorch, Numba, etc. is available. Note that you often also need OpenMPI so load that as well. 
@@ -393,6 +400,14 @@ module load matplotlib
 -----
 
 #### Hints
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+- Take care not to use any system-installed versions of ``gcc``, ``python``, etc. Always use the module instead, when available!
+- Always check if there is a module instead of just building the software/package yourself!
+    - Remember, check with different capitalization! 
+    - If the center you are at have modules installed in a hierarchical fashion (LUNARC, HPC2N, C3SE, PDC) you must use ``module spider`` to check if a software is installed, since ``module avail`` only lists what is available with what is currently loaded 
+- If there is a software missing that you need, then ask if it can be installed. 
 
 -----
 

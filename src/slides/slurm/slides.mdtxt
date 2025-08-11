@@ -40,9 +40,9 @@ Examples: Tetralith (NSC), Dardel (KTH), Kebnekaise (HPC2N)
 
 -----
 
-### Site specifics - Tetralith 
+#### Site specifics - Tetralith 
 
-<normal>
+<small style="width: 85%; position: relative; bottom: 100px;">
 
 - 32 cores/node
 - 96-384 GB RAM/node
@@ -56,7 +56,9 @@ Examples: Tetralith (NSC), Dardel (KTH), Kebnekaise (HPC2N)
 
 -----
 
-### Site specifics - Dardel 
+#### Site specifics - Dardel 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
 
 - 128 cores/node
 - 256-2048 GB RAM/node
@@ -72,7 +74,7 @@ Examples: Tetralith (NSC), Dardel (KTH), Kebnekaise (HPC2N)
 
 #### Site specifics - Kebnekaise 
 
-<small style="width: 95%; position: relative; bottom: 80px;">
+<small style="width: 95%; position: relative; bottom: 90px;">
 
 - 28 cores/skylake, 72 cores/largemem, 128/256 cores/AMD Zen3/Zen4 
 - 128-3072 GB RAM/node 
@@ -91,10 +93,11 @@ Examples: Tetralith (NSC), Dardel (KTH), Kebnekaise (HPC2N)
         - h100, 4
         - mi100, 2
 
-
 -----
 
-### Serial, MPI, and OpenMP jobs
+### Batch jobs
+
+<small style="width: 85%; position: relative; bottom: 100px;">
 
 Serial job: 
 
@@ -126,7 +129,7 @@ module load <modules>
 
 -----
 
-### Serial, MPI, and OpenMP jobs
+### Batch jobs
 
 <small style="width: 95%; position: relative; bottom: 80px;"> 
 
@@ -149,7 +152,7 @@ srun ./mympiprogram
 
 -----
 
-### Serial, MPI, and OpenMP jobs
+### Batch jobs
 
 <small style="width: 95%; position: relative; bottom: 80px;">
 
@@ -195,12 +198,14 @@ This is the most different of the Slurm settings, between centers.
 
 ### Dependencies
 
-Sometimes your workflow has jobs that depend on a previous job 
+<small style="width: 85%; position: relative; bottom: 100px;">
 
-- Submit your first job: ``sbatch myjob.sh``
-- Wait for that job to finish before starting next job: ``sbatch -d afterok:<prev-JOBID> mynextjob.sh``
+Sometimes your workflow has jobs that depend on a previous job. This can be handled through Slurm:  
 
-Several jobs connected like this -> scripting!  
+- Submit your first job: ``sbatch my-job.sh``
+- Wait for that job to finish before starting next job: <br>``sbatch -d afterok:<prev-JOBID> my-next-job.sh``
+
+If you have several/many jobs connected like this it is probably a good idea to script it.  
 
 -----
 
@@ -526,4 +531,10 @@ srun python hello-world-array.py $SLURM_ARRAY_TASK_ID
 
 ### Hands-ons
 
+1. Submit a non GPU job (simple.sh, MPI.sh, or OpenMP.sh). Check with ``scontrol show job JOBID`` which type of node was allocated. 
+2. Submit a GPU job (GPU.sh) and check with ``scontrol show job JOBID`` which type of node was allocated. 
+3. job2.sh depends on job1.sh. Submit job1.sh and then submit job2.sh so that it does not start until job1.sh has run. 
+4. (Optional) Create a jobscript that submits job1.sh and job2.sh, but so that job2.sh does not start until job1.sh has run. 
+5. Make a jobscript that asks for more cores per task, but just for extra memory. 
+6. Try run the hello-world-array.sh job 
 
