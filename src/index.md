@@ -18,11 +18,6 @@ Given by NAISS staff at the HPC2N branch, for the USAC/NAISS meeting 26-27 Augus
 
 ## Login info
 
-- HPC2N - Kebnekaise 
-    - SSH: kebnekaise.hpc2n.umu.se 
-    - ThinLinc: kebnekaise-tl.hpc2n.umu.se 
-    - From webbrowser: https://kebnekaise-tl.hpc2n.umu.se:300/ 
-    - OpenOnDemand: https://portal.hpc2n.umu.se
 - NSC – Tetralith  
     - SSH: tetralith.pdc.kth.se 
     - ThinLinc: tetralith.pdc.kth.se  
@@ -36,6 +31,11 @@ Given by NAISS staff at the HPC2N branch, for the USAC/NAISS meeting 26-27 Augus
     - Login/data transfer node alvis2.c3se.chalmers.se
     - OpenOnDemand: https://alvis.c3se.chalmers.se 
     - ThinLinc and other ways to connect for remote graphics: https://www.c3se.chalmers.se/documentation/connecting/remote_graphics/ 
+- HPC2N - Kebnekaise
+    - SSH: kebnekaise.hpc2n.umu.se
+    - ThinLinc: kebnekaise-tl.hpc2n.umu.se
+    - From webbrowser: https://kebnekaise-tl.hpc2n.umu.se:300/
+    - OpenOnDemand: https://portal.hpc2n.umu.se
 
 ## Hands-on exercises 
 
