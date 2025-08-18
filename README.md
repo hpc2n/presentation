@@ -2,11 +2,13 @@
 
 Just comment out the modules/pages (under nav) that you do not need.
 
-The slides DO NOT work on github, only locally. 
+The slides DO NOT work on github, only locally, on your own computer. 
 
 Info about the slide show software here: https://github.com/dhondta/mkdocs-revealjs-template 
 
 More details about how to create the different items: https://github.com/dhondta/mkdocs-revealjs-template/blob/master/doc/tuning-revealjs-slideshows.md 
+
+Also read the file ``help.md`` in this directory. 
 
 ## Running it locally. 
 
