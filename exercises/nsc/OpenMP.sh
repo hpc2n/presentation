@@ -1,13 +1,8 @@
 #!/bin/bash
 # Project id - change to your own after the workshop!
-#SBATCH -A NAISS2025-22-934
-#SBATCH -p alvis
-# You need to ask for a GPU to run on alvis.
-# This is a CPU job. Do not do things like this normally!
-# Only use for GPU jobs!
-#SBATCH -N 1 --gpus-per-node=T4:4
+#SBATCH -A hpc2n2025-151
 # Number of cores per tasks
-#SBATCH -n 1 -c 8
+#SBATCH -c 8 
 # Asking for a walltime of 5 min
 #SBATCH --time=00:05:00
 
@@ -27,4 +22,3 @@ fi
 export OMP_NUM_THREADS=$omp_threads
 
 ./omp_hello
-

@@ -1,13 +1,8 @@
 #!/bin/bash
 # Change to your own project ID! 
-#SBATCH -A NAISS2025-22-934 
+#SBATCH -A hpc2n2025-151
 #SBATCH --time=00:10:00 # Asking for 10 minutes
-#SBATCH -p alvis
-# You need to ask for a GPU to run on alvis.
-# This is a CPU job. Do not do things like this normally!
-# Only use for GPU jobs!
-#SBATCH --gpus-per-node=T4:1
-#SBATCH -n 1 -c 1 # Asking for 1 core    # one core per task
+#SBATCH -n 1 # Asking for 1 core
 
 # Load any modules you need, here for Python 3.11.3 and compatible SciPy-bundle
 module purge  > /dev/null 2>&1
