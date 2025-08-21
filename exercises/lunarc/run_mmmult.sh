@@ -1,7 +1,7 @@
 #!/bin/bash
 # Change to your own project ID! 
-#SBATCH -A hpc2n2025-151
-#SBATCH --time=00:10:00 # Asking for 10 minutes
+#SBATCH -A luXXXX-Y-ZZ 
+#SBATCH --time=00:18:00 # Asking for 18 minutes
 #SBATCH -n 1 # Asking for 1 core
 
 # Load any modules you need, here for Python 3.11.3 and compatible SciPy-bundle

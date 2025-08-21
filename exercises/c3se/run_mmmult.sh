@@ -1,7 +1,7 @@
 #!/bin/bash
 # Change to your own project ID! 
 #SBATCH -A NAISS2025-22-934 
-#SBATCH --time=00:10:00 # Asking for 10 minutes
+#SBATCH --time=00:20:00 # Asking for 20 minutes
 #SBATCH -p alvis
 # You need to ask for a GPU to run on alvis.
 # This is a CPU job. Do not do things like this normally!

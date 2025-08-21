@@ -1,8 +1,8 @@
 #!/bin/bash
-# Project id - change to your own after the workshop!
-#SBATCH -A hpc2n2025-151
-# Number of tasks, here 14 - default is 1 core per task
-#SBATCH -n 14
+# Project id - change to your own!
+#SBATCH -A luXXXX-Y-ZZ
+# Number of tasks, here 8 - default is 1 core per task
+#SBATCH -n 8
 # Asking for a walltime of 5 min
 #SBATCH --time=00:05:00
 
