@@ -1,13 +1,13 @@
 #!/bin/bash
-# Project id - change to your own after the workshop!
-#SBATCH -A hpc2n2025-151
+# Project id - change to your own!
+#SBATCH -A uppmaxXXXX-Y-ZZZ
 # Number of cores per tasks
 #SBATCH -c 8 
 # Asking for a walltime of 5 min
 #SBATCH --time=00:05:00
 
 # Load a compiler toolchain so we can run an OpenMPI C program
-module load foss/2023b
+module load gcc/10.3
 
 # Compile the OpenMP program omp_hello.c for ease
 gcc -fopenmp omp_hello.c -o omp_hello

@@ -1,6 +1,6 @@
 #!/bin/bash
-# Project id - change to your own after the workshop!
-#SBATCH -A hpc2n2025-151
+# Project id - change to your own!
+#SBATCH -A uppmaxXXXX-Y-ZZZ
 # Asking for 1 core
 #SBATCH -n 1
 # Asking for a walltime of 1 min
