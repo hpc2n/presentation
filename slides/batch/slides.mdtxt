@@ -1,0 +1,171 @@
+## <!-- .element: class="slideshow-title" --> Slurm - a batch scheduler
+
+<img src="../../img/logo.png" width="35%">
+<br>
+<small>2025-08-27</small>
+<br>
+<small>Birgitte Brydsö, HPC2N</small>
+
+
+
+-----
+
+### Overview
+
+<small style="width: 85%; position: relative; bottom: 80px;">
+
+- What is a batch scheduler?
+- The Slurm batch scheduler: commands
+
+-----
+
+### Batch schedulers 
+
+<small style="width: 85%; position: relative; bottom: 80px;">
+
+A batch system provides a mechanism to submit programs (jobs) or groups of programs to be executed automatically.
+
+While batch systems are usually associated with large compute clusters, they could also be run on a single computer. Here, however, we will focus on its use on clusters, like Tetralith, Dardel, Alvis, or Kebnekaise.
+
+-----
+
+#### Batch schedulers - HPC clusters
+
+<img src="../../img/cluster.png" width="30%">
+
+<small style="width: 85%; position: relative; bottom: 80px;">
+
+- Many compute nodes (calculations)
+- Login node (submission, compiling, ...)
+- Global disk (shared for all cluster, visible for all nodes)
+- Node-local disk (best performance, only visible inside node, during job)
+
+-----
+
+#### Batch schedulers - job types
+
+<small style="width: 85%; position: relative; bottom: 80px;">
+
+Many types of jobs can be handled by a job scheduler and made to run efficiently on a cluster. These are some typical examples:  
+
+- Tasks that can be split up into many serial jobs
+- Many instances of the same task
+- MPI jobs
+- Shared memory
+- GPU jobs 
+
+-----
+
+#### Batch schedulers - scheduling jobs
+
+<small style="width: 90%; position: relative; bottom: 80px;">
+
+**Key functions:**
+
+- Keeps track of available system resources - it allocates to users, exclusive or non-exclusive access to resources for some period of time
+- Enforces local system resource usage and job scheduling policies - provides a framework for starting, executing, and monitoring work
+- Manages a job queue, distributing work across resources according to policies
+
+**NOTE**: 
+
+You can run programs either by giving all the commands on the command line or by submitting a job script. Using a job script is often recommended (terminal is available, easy record of commands) 
+
+-----
+
+#### Batch schedulers - NAISS 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+- Large/long/parallel jobs **must** be run through the batch system.
+    - Work done through OpenOnDemand where that is available is automatically run through the batch system
+- The Swedish HPC centres under NAISS all use Slurm 
+- Slurm is an Open Source job scheduler which handles the three key functions mentioned previously 
+
+-----
+
+#### Batch schedulers - job types
+
+<small style="width: 90%; position: relative; bottom: 80px;">
+
+Many types of jobs can be handled by a job scheduler and made to run efficiently on a cluster. These are some typical examples:
+
+- Tasks that can be split up into many serial jobs
+- Many instances of the same task
+- MPI jobs
+- Shared memory
+- GPU jobs
+
+-----
+
+#### Batch schedulers - Slurm commands 
+
+<small style="width: 90%; position: relative; bottom: 80px;">
+
+Using a job script is often recommended.
+
+- If you ask for resources on the command line, you wait for the program to run before you can use the window again (unless you can send it to the background with &).
+- If you use a job script you have an easy record of the commands you used, to reuse or edit.
+- In order to run a batch job, you need to create and submit a SLURM submit file (also called a batch submit file, a batch script, or a job script).
+
+-----
+
+#### Batch schedulers - Slurm commands refresher 
+
+<small style="width: 90%; position: relative; bottom: 80px;">
+
+When you submit a job, the system returns a Job ID. Also found from ``squeue --me``. 
+
+Below, JOBSCRIPT is your job script, JOBID is the job ID assigned by Slurm to your job. USERNAME is your username.
+
+- **Submit job**: ``sbatch JOBSCRIPT``
+- **Get list of your jobs**: ``squeue -u USERNAME`` or ``squeue --me``
+- **Give Slurm commands on command line**: ``srun <commands-for-your-job> program``
+- **Check on a specific job**: ``scontrol show job JOBID``
+- **Delete a specific job**: ``scancel JOBID``
+- **Delete all your own jobs**: ``scancel -u USERNAME``
+- **Submit job**: ``sbatch JOBSCRIPT``
+
+-----
+
+#### Slurm - job states
+
+<small style="width: 90%; position: relative; bottom: 80px;">
+
+Here I have submitted the jobscript ``simple.sh`` a number of times: 
+
+```bash 
+   b-an01 [~]$ squeue --me
+               JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+            27774876  cpu_zen4, simple.s bbrydsoe  PD      0:00      1 (None)
+            27774875  cpu_zen4, simple.s bbrydsoe  PD      0:00      1 (None)
+            27774873  cpu_zen4  simple.s bbrydsoe  R       0:02      1 b-cn1702
+            27774874  cpu_zen4  simple.s bbrydsoe  R       0:02      1 b-cn1702
+            27774872  cpu_zen4  simple.s bbrydsoe  CG      0:04      1 b-cn1702
+```
+
+- **CA**: CANCELLED. Job was explicitly cancelled by the user or system administrator.
+- **CF**: CONFIGURING. Job has been allocated resources which are not yet ready for use (e.g. booting).
+- **CG**: COMPLETING. Job is completing, but some processes may still be active.
+- **PD**: PENDING. Job is awaiting resource allocation.
+- **R**: RUNNING. Job currently has an allocation.
+- **S**: SUSPENDED. Job has an allocation, but execution is suspended and resources released for other jobs.
+
+-----
+
+#### Slurm - job starting times 
+
+- the estimated start time can be seem from ``scontrol show job JOBID`` or ``squeue --me --start``
+- the estimated start time **may change** depending on other jobs being submitted, starting, or ending (perhaps earlier than expected) 
+
+-----
+
+#### Slurm - Hands-on 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+1. Go to the sub-directory "slurm"
+2. Submit the job script "simple.sh" a number of times
+3. Type ``squeue --me``  to see a list of your jobs and their states 
+4. If the job ran too fast, then submit it several more times to see the output of ``squeue --me``
+5. You can also look at ``scontrol show job JOBID`` for more information about your job 
+

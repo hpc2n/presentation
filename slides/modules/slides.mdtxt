@@ -1,0 +1,416 @@
+## <!-- .element: class="slideshow-title" --> Module management
+
+<img src="../../img/logo.png" width="35%">
+<br>
+<small>2025-08-27</small>
+<br>
+<small>Birgitte Brydsö, HPC2N</small>
+
+-----
+
+### Software modules - refresher 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+Most programs are accessed by first loading them as a 'module'.
+
+Modules are:
+
+- used to set up your environment (paths to executables, libraries, etc.) for using a particular (set of) software package(s)
+- a tool to help users manage their Unix/Linux shell environment, allowing groups of related environment-variable settings to be made or removed dynamically
+- allows having multiple versions of a program or package available by just loading the proper module
+- are installed in a hierarchial layout. This means that some modules are only available after loading a specific compiler and/or MPI version.
+
+-----
+
+#### Lmod/Easybuild
+
+- Many HPC centres in Sweden use the Lmod module system. It is an environment module system that is Lua based.
+- Many, but not all of them use the EasyBuild framework for building and installing software modules. 
+
+-----
+
+### Module commands - refresher 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+- **module spider** or **ml spider**: list all modules
+- **module spider MODULE** or **ml spider MODULE**: list versions of MODULE
+- **module spider MODULE/VERSION** or **ml spider MODULE/VERSION**: how to load/prerequisites
+- **module avail** or **ml av**: modules available with what is currently loaded
+- **module list** or **ml**: list loaded modules
+- **module load MODULE** or **ml MODULE**: load a module
+- **module load MODULE/VERSION** or **ml MODULE/VERSION**: load a MODULE with a specific VERSION
+- **module unload MODULE** or **ml -MODULE**
+- **ml show MODULE** or **module show MODULE**
+- **module purge** or **ml purge**: unload all modules except the 'sticky' modules
+
+
+-----
+
+### Module commands - comments 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+- Finding existing modules is best done with 
+    - ``module spider`` ("hierarchiacal sites": HPC2N, LUNARC, C3SE, PDC)
+    - ``module avail`` ("flat sites": UPPMAX, NSC) 
+- Unloading a module with ``module unload`` will not unload any prerequisites
+- The command ``module purge`` is 
+    - recommended (or at least safe): HPC2N, LUNARC, NSC, C3SE 
+    - more or less **problematic**: UPPMAX, PDC 
+        - you need to reload one or *many* (PDC) modules. 
+        - For PDC this is easiest solved by not doing ``module purge`` or using "module collections"
+    - At "hierarchiacal sites" you usually need to load a "compiler toolchain" before loading most modules 
+
+-----
+
+### Compiler toolchains 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+- As mentioned, many Swedish HPC centres use EasyBuild software for installing software modules. 
+- Software is built around so-called “toolchains”: mutually compatible groups of C and Fortran compilers, linear algebra libraries, MPI libraries, and other fundamental packages that are used internally by more familiar packages that users typically work with (e.g., Python, R, GROMACS, etc.).
+- If you need to load several modules that are built with compiler toolchains, they need to be built with the *same* one 
+- A good way to find compatible modules is to load the toolchain need for i.e. Python/VERSION and then see which versions of TensorFlow, PyTorch, Numba, etc. is available. Note that you often also need OpenMPI so load that as well. 
+- You can always find the compiler toolchains with ``module avail`` (intel, gcc, foss, etc.) 
+- Many modules on Tetralith has the prerequisite ``buildtool-easybuild/<version>-hpc<version>``
+
+-----
+
+### Module collections 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+Module collections are used to load/unload a bunch of modules: 
+- ``module save <collection>``
+- ``module restore <collection>``
+
+This can be useful if you often need to load the same several modules in specific versions, for instance, particularly if you have two or more groups of modules you often need for different purposes 
+
+It is also useful if you have a habit of using "module purge" and then start using Dardel. You could create a collection of its modules just after logging in and then you can always restore it. 
+
+-----
+
+#### Module collections - example 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+Load the modules:
+```bash
+b-an01 [~]$ module load GCC/12.3.0 OpenMPI/4.1.5 Python/3.11.3 
+b-an01 [~]$ module load SciPy-bundle/2023.07 
+b-an01 [~]$ module load matplotlib/3.7.2 
+```
+Save to a collection (here, “mypython”):
+```bash
+b-an01 [~]$ module save mypython
+Saved current collection of modules to: "mypython"
+
+b-an01 [~]$ 
+```
+
+Later you find you also need mpi4py so you load it and add it to the collection:
+```bash
+b-an01 [~]$ ml mpi4py/3.1.4 
+b-an01 [~]$ 
+module save mypython
+Saved current collection of modules to: "mypython"
+
+b-an01 [~]$ 
+```
+
+At later point, you can then restore the collection again:
+```bash
+b-an01 [~]$ module restore mypython
+Restoring modules from user's mypython
+b-an01 [~]$ 
+```
+
+-----
+
+#### Finding Python 3.x.x and compatible Pandas and matplotlib 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+**Tetralith**
+
+- Little is installed with the Python module
+- most common Python packages are available as modules (SciPy-bundle, matplotlib, mpi4py, PyTorch, Python-bundle-PyPi, Jupyter, …)
+- Most modules also have an extra prerequisite, ``buildtool-easybuild/<some-version>-hpc<some-other-version>`` 
+- Like at many sites, Pandas (and numpy etc.) are available in the "SciPy-bundle" module 
+
+-----
+
+#### Continued - load Pandas in SciPy-bundle
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+```bash
+[x_birbr@tetralith1 ~]$ module spider SciPy-bundle
+...
+
+     Versions:
+        SciPy-bundle/2022.05
+        SciPy-bundle/2023.11
+
+[x_birbr@tetralith1 ~]$ module spider SciPy-bundle/2023.11
+...
+
+    You will need to load all module(s) on any one of the lines below before the "SciPy-bundle/2023.11" module is available to load.
+
+      buildtool-easybuild/4.8.0-hpce082752a2  GCC/13.2.0
+      buildtool-easybuild/4.9.4-hpc71cbb0050  GCC/13.2.0
+ 
+[x_birbr@tetralith1 ~]$ module load buildtool-easybuild/4.9.4-hpc71cbb0050 GCC/13.2.0 SciPy-bundle/2023.11
+``` 
+
+Let us see what is loaded: 
+
+```bash 
+[x_birbr@tetralith1 ~]$ module list
+
+Currently Loaded Modules:
+  1) hpc/.1.10.1                            (H,S)   6) GCC/13.2.0       11) ncurses/6.4      16) libffi/3.4.4         21) virtualenv/20.24.6
+  2) buildtool-easybuild/4.9.4-hpc71cbb0050         7) OpenBLAS/0.3.24  12) libreadline/8.2  17) OpenSSL/1.1          22) Python-bundle-PyPI/2023.10
+  3) GCCcore/13.2.0                                 8) FlexiBLAS/3.3.1  13) Tcl/8.6.13       18) Python/3.11.5        23) pybind11/2.11.1
+  4) zlib/.1.2.13                           (H)     9) FFTW/3.3.10      14) SQLite/3.43.1    19) cffi/1.15.1          24) SciPy-bundle/2023.11
+  5) binutils/.2.40                         (H)    10) bzip2/1.0.8      15) XZ/5.4.4         20) cryptography/41.0.5
+
+  Where:
+   S:  Module is Sticky, requires --force to unload or purge
+   H:             Hidden Module
+```
+
+-----
+
+#### Continued - load a compatible matplotlib 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+Now let us load a compatible matplotlib. We could check the requirements and see it has been fullfilled, or we can just try load it.
+
+- Type "module load" and start typing "matplotlib" then hit "tab" and it will autocomplete to a compatible version if it can now be loaded. 
+- Or simple load "matplotlib" without giving a version as only the compatible one can now be loaded:
+```bash
+[x_birbr@tetralith1 ~]$ module load matplotlib
+```
+
+-----
+
+#### Loading Python modules - Dardel example 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+- most modules included in SciPy-bundle (NumPy, SciPy, Pandas, etc.) are in ``cray-python`` modules, and these are compatible with a couple of the installed versions of matplotlib. 
+- Python modules that do not include the ``cray-`` prefix have very little installed in them and are not compatible with most other Python-adjacent modules; these are typically intended as bases for users to build their own environments. 
+- Most programs on Dardel also have an extra prerequisite, ``PDC/XX.XX`` or ``PDCOLD/XX.XX`` that must be loaded before anything else.
+- Remember, do NOT use ``module purge`` unless you have set up a "module collection"
+
+
+-----
+
+#### Find and load Python and compatible pandas and matplotlib
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+```bash
+bbrydsoe@login1:~> module spider cray-python
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+  cray-python:
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+     Versions:
+        cray-python/3.10.10
+        cray-python/3.11.5
+        cray-python/3.11.7
+...
+```
+
+```bash
+bbrydsoe@login1:~> module spider cray-python/3.11.7
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+  cray-python: cray-python/3.11.7
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    This module can be loaded directly: module load cray-python/3.11.7
+...
+```
+
+```bash
+bbrydsoe@login1:~> module list
+
+Currently Loaded Modules:
+  1) craype-x86-rome      4) perftools-base/24.11.0                          7) craype/2.7.33      10) cray-libsci/24.11.0  13) systemdefault/1.0.0 (S)
+  2) libfabric/1.22.0     5) xpmem/2.9.6-1.1_20240510205610__g087dc11fc19d   8) cray-dsmml/0.3.0   11) PrgEnv-cray/8.6.0    14) cray-python/3.11.7
+  3) craype-network-ofi   6) cce/18.0.1                                      9) cray-mpich/8.1.31  12) snic-env/1.0.0
+
+  Where:
+   S:  Module is Sticky, requires --force to unload or purge
+```
+
+-----
+
+#### Continued - check for Pandas 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+Let us try do "pip list" as there is no "pandas" module and no "SciPy-bundle" module: 
+
+```bash 
+bbrydsoe@login1:~> pip list
+Package            Version
+------------------ -----------
+...
+mpi4py             3.1.4
+numpy              1.24.4
+packaging          24.1
+pandas             1.5.3
+partd              1.4.2
+pip                23.2.1
+pluggy             1.5.0
+...
+```
+
+(This is only part of the list). 
+
+So it is there. 
+
+-----
+
+#### Now on to finding "matplotlib" 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+```bash
+bbrydsoe@login1:~> ml spider matplotlib
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+  matplotlib:
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+     Versions:
+        matplotlib/3.8.2-cpeGNU-23.12
+        matplotlib/3.8.2 (E)
+     Other possible modules matches:
+        py-matplotlib
+...
+```
+
+```bash
+bbrydsoe@login1:~> ml spider matplotlib/3.8.2-cpeGNU-23.12
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+  matplotlib: matplotlib/3.8.2-cpeGNU-23.12
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Description:
+      Matplotlib+Seaborn: Visualization with Python. (Dependency purposes only.)
+
+
+    You will need to load all module(s) on any one of the lines below before the "matplotlib/3.8.2-cpeGNU-23.12" module is available to load.
+
+      PDCOLD/23.12
+ 
+    This module provides the following extensions:
+
+       contourpy/1.2.0 (E), Cycler/0.12.1 (E), fonttools/4.47.0 (E), kiwisolver/1.4.5 (E), matplotlib/3.8.2 (E), pygal/3.0.4 (E), Seaborn/0.13.2 (E)
+...
+```
+
+So we load ``module load cray-python/3.11.7`` and then ``module load cray-python/3.11.7`` 
+
+-----
+
+### Module example - Kebnekaise 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+Hierarchical layout like LUNARC etc. 
+
+```bash
+b-an01 [~]$ module spider Python
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+  Python:
+----------------------------------------------------------------------------------------------------------------------------------------------------
+    Description:
+      Python is a programming language that lets you work more quickly and integrate your systems more effectively.
+
+     Versions:
+        Python/2.7.15
+        Python/2.7.16
+        Python/2.7.18-bare
+        Python/2.7.18
+        Python/3.7.2
+        Python/3.7.4
+        Python/3.8.2
+        Python/3.8.6
+        Python/3.9.5-bare
+        Python/3.9.5
+        Python/3.9.6-bare
+        Python/3.9.6
+        Python/3.10.4-bare
+        Python/3.10.4
+        Python/3.10.8-bare
+        Python/3.10.8
+        Python/3.11.3
+        Python/3.11.5
+        Python/3.12.3
+        Python/3.13.1
+...
+```
+
+-----
+
+#### Continued 
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+```bash
+b-an01 [~]$ module spider Python/3.11.3
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+  Python: Python/3.11.3
+----------------------------------------------------------------------------------------------------------------------------------------------------
+    Description:
+      Python is a programming language that lets you work more quickly and integrate your systems more effectively.
+
+
+    You will need to load all module(s) on any one of the lines below before the "Python/3.11.3" module is available to load.
+
+      GCCcore/12.3.0
+...
+```
+
+Pandas is in SciPy-bundle. Let us find a compatible one. It requires OpenMPI so easiest to load full ``GCC/12.3.0`` and then just load compatible OpenMPI and then SciPy-bundle: 
+
+```bash
+b-an01 [~]$ module load GCC/12.3.0
+b-an01 [~]$ module load Python/3.11.3
+b-an01 [~]$ module load OpenMPI
+b-an01 [~]$ module load SciPy-bundle
+```
+
+You should always load with version, but in this case there is no risk as there is only one available. Same for "matplotlib": 
+
+```bash
+module load matplotlib
+``` 
+
+-----
+
+#### Hints
+
+<small style="width: 85%; position: relative; bottom: 100px;">
+
+- Take care not to use any system-installed versions of ``gcc``, ``python``, etc. Always use the module instead, when available!
+- Always check if there is a module instead of just building the software/package yourself!
+    - Remember, check with different capitalization! 
+    - If the center you are at have modules installed in a hierarchical fashion (LUNARC, HPC2N, C3SE, PDC) you must use ``module spider`` to check if a software is installed, since ``module avail`` only lists what is available with what is currently loaded 
+- If there is a software missing that you need, then ask if it can be installed. 
+
+-----
+
+#### Hands-ons
+
+

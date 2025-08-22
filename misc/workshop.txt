@@ -1,0 +1,54 @@
+Workshop: Slurm and module management
+
+Join the NAISS/USAC hands-on workshop organized by HPC2N. The first hour will cover how to use Slurm efficiently at NAISS (and HPC2N), while the second hour while be about module management.
+
+The workshop is intended for existing users, and you will require an account at some NAISS system (or at HPC2N) to participate in the hands-on.
+
+
+
+
+
+Online training seminar: Cluster architecture and job submission, 2 September 2025 at 13:30
+
+
+This event explains key features of a contemporary HPC cluster, such as deployed at LUNARC and throughout NAISS.  It will explain the principles behind the job scheduler and how the scheduler can be used to accomplish your computational work in an efficient manner.  The examples will utilise the SLURM scheduler, which is deployed on the NAISS resources.
+
+
+The event is organised as an online seminar.  The seminar addresses users who have recently started using HPC systems and prospective users considering using an HPC system in the near future.
+
+
+Time: 2 September at 13:30
+
+
+For more information and registration visit: https://www.lunarc.lu.se/learning-more/training-courses/cluster-architecture-and-job-submission-2-september-2025/
+
+
+This seminar is planned to be offered again in November
+
+ Online workshop: Selecting software modules, 10 September 2025
+
+In this half-day, ONLINE workshop you will learn about the module system used at most NAISS centres, how to find out if a specific software is installed as a module, as well as how to load it and (briefly) how to use it in batch jobs.
+
+Eligibility: the NAISS course is open to current and future users in Swedish academia. Participation is free.
+
+Time and date: 10 September 2025, halfday
+
+Registration and more information: https://www.hpc2n.umu.se/events/courses/2025/fall/1/selecting-modules
+
+
+
+Participate in the optional hand-on workshop organized by HPC2N, covering efficient use of SLUM and module management.
+
+When: August 26–27, Lunch-lunch. Program details to be sent out later.
+
+Where: Stora Fokusrummet, KBC-Building, Umeå University
+Workshop (Optional)
+
+Hosted by HPC2N, this hands-on session will cover:
+
+Advanced SLURM Usage: Tips and tricks for efficient job scheduling.
+
+Module Management: Best practices for software environments on NAISS and Kebnekaise clusters.
+
+Interactive Case Studies: Bring your own scripts for one-on-one troubleshooting.
+
